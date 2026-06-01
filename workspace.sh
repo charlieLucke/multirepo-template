@@ -140,17 +140,30 @@ cmd_check() {  ## System quality gate: each repo's `make check` + contract verif
 }
 
 cmd_contracts() {  ## Verify each service still matches its published contract
+  # Two levels: (1) the declared contract file exists; (2) if the service sets a
+  # `contract_source:` (a live /openapi.json URL or a spec file), diff the live
+  # operations against the committed contract to catch drift. Drift fails the gate;
+  # an unreachable source is a SKIP, not a failure (the service may just be down).
   local rc=0 any=0
   for name in $(MANIFEST names); do
     local exposes; exposes="$(MANIFEST field "$name" exposes)"
     [ -n "$exposes" ] || continue
     any=1
-    if [ -f "$exposes" ]; then ok "$name → $exposes present"
-    else err "$name declares exposes: $exposes but the file is missing"; rc=1; fi
+    if [ ! -f "$exposes" ]; then
+      err "$name declares exposes: $exposes but the file is missing"; rc=1; continue
+    fi
+    local source; source="$(MANIFEST field "$name" contract_source)"
+    if [ -n "$source" ]; then
+      info "$name: diffing $exposes against $source"
+      local drc=0
+      python3 "$ROOT/scripts/contract_diff.py" "$exposes" "$source" || drc=$?
+      # contract_diff exits: 0 in sync, 1 drift (fail), 2 skipped (source down → tolerate)
+      if [ "$drc" -eq 1 ]; then err "$name: contract drift"; rc=1; fi
+    else
+      ok "$name → $exposes present (presence-only; set contract_source for drift checks)"
+    fi
   done
   [ "$any" = 1 ] || info "no contracts declared yet"
-  # placeholder for real verification (e.g. schemathesis against a running service,
-  # or `openapi diff` against the live /openapi.json) — wire in per system.
   return $rc
 }
 

@@ -27,6 +27,8 @@ defaults:
 #   path:     checkout path (optional; defaults to repos/<name>)
 #   consumes: which other services this one calls (for the dependency graph)
 #   exposes:  contract file under contracts/ this service publishes (optional)
+#   contract_source: live OpenAPI JSON URL or spec file to diff `exposes` against
+#             for drift (optional; used by `./workspace.sh contracts`)
 #   port:     local port, if it runs a service (optional)
 #   pin:      commit SHA to pin to (optional; managed via `workspace.sh lock`)
 services: []

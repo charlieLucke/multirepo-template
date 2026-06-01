@@ -20,6 +20,7 @@ services:
     role: RAG engine — ingest (Docling → Late Chunking → BGE-M3) + hybrid search over Qdrant
     consumes: []                       # bottom of the stack; talks only to local infra (Qdrant, GPU)
     exposes: contracts/titan.openapi.yaml
+    contract_source: http://127.0.0.1:8765/openapi.json  # live spec to diff for drift
     port: 8765                         # FastAPI, bound 127.0.0.1 (local only by design)
 
   - name: brain-mcp
