@@ -11,6 +11,10 @@
 .env.*.local
 !.env.example
 
+# --- Python (the workspace's own tooling) ---
+__pycache__/
+*.py[cod]
+
 # --- OS ---
 .DS_Store
 Thumbs.db
