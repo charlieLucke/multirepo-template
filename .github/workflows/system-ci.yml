@@ -1,0 +1,58 @@
+name: System CI
+
+# The workspace meta-repo's CI. Each service repo runs its own CI on its own pushes;
+# this job validates the *system*: the manifest is coherent, contracts are present, and
+# (optionally) every service still passes its gate against pinned commits.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  manifest:
+    name: Validate manifest & contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate repos.yaml
+        run: python3 scripts/manifest.py check
+      - name: Show dependency graph
+        run: python3 scripts/manifest.py graph
+      - name: Contracts declared in the manifest exist
+        run: |
+          set -e
+          for name in $(python3 scripts/manifest.py names); do
+            exposes="$(python3 scripts/manifest.py field "$name" exposes)"
+            if [ -n "$exposes" ] && [ ! -f "$exposes" ]; then
+              echo "::error::$name declares exposes: $exposes but the file is missing"
+              exit 1
+            fi
+          done
+
+  # Optional: clone every service and run its gate. Disabled by default because it needs
+  # read access to the service repos (a token/SSH deploy key). Enable once that's set up.
+  services:
+    name: Per-service quality gate
+    if: ${{ false }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+      - name: Clone services
+        run: ./workspace.sh clone
+        # env:
+        #   GIT_ASKPASS / a PAT or SSH key for private service repos
+      - name: System check
+        run: ./workspace.sh check
