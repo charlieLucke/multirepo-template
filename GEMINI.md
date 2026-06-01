@@ -115,6 +115,7 @@ docs/ai/
 ├── CURRENT_TASK.md   # Active cross-repo feature
 ├── HANDOFF.md        # System handoff (which repos at which commit)
 ├── IDEAS.md          # Out-of-scope ideas
+├── PLANNING.md       # Opus planning brief — load into a planning chat to author plans
 └── plans/            # Opus plans that coordinate multiple repos
 contracts/            # Machine-readable contracts (OpenAPI, JSON Schema, …)
 shared/               # Convention fragments DRY-pulled into each child repo

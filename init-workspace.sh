@@ -44,6 +44,14 @@ if [ -f README.md ] && grep -q "TEMPLATE-USAGE:START" README.md; then
     echo "✓ Removed template-only README section"
 fi
 
+# Remove the bundled example system. It's reference material for the template, not part
+# of a real instance — a second, filled-in system definition sitting next to the real one
+# would confuse an agent (two SYSTEM.md / repos.yaml). Real systems start clean.
+if [ -d examples ]; then
+    rm -rf examples
+    echo "✓ Removed examples/ (template-only reference)"
+fi
+
 # Make the scripts executable.
 chmod +x workspace.sh scripts/manifest.py 2>/dev/null || true
 
