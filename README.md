@@ -89,4 +89,4 @@ the system quality gate. Child repos keep their own `CLAUDE.md` for local work.
 
 ## License
 
-TBD
+MIT — see [LICENSE](LICENSE).
