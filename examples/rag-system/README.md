@@ -1,25 +1,25 @@
-# Example: rag-system
+# Beispiel: rag-system
 
-A **filled-in** instance of this template, modeled on charlie's real local RAG stack. It
-shows what the workspace files look like once a system actually exists — use it as a
-reference when filling in your own.
+Eine **ausgefüllte** Instanz dieses Templates, modelliert nach charlies echtem lokalem RAG-Stack. Sie
+zeigt, wie die Workspace-Dateien aussehen, sobald ein System tatsächlich existiert — nutze sie als
+Referenz beim Ausfüllen deines eigenen.
 
-The four services (already real repos under `~/projects`):
+Die vier Services (bereits echte Repos unter `~/projects`):
 
-| Repo | Role | Port |
+| Repo | Rolle | Port |
 |------|------|------|
-| `titan` | RAG engine (ingest + hybrid search over Qdrant) | 8765 |
-| `brain-mcp` | MCP server + vault watcher (bridge to Claude) | 9100 |
-| `brain-dashboard` | Web control panel (status/logs/start-stop) | 9200 |
-| `obsidian-inbox-watcher` | Raw docs → Gemini → vault note | — |
+| `titan` | RAG-Engine (Ingest + hybride Suche über Qdrant) | 8765 |
+| `brain-mcp` | MCP-Server + Vault-Watcher (Brücke zu Claude) | 9100 |
+| `brain-dashboard` | Web-Control-Panel (Status/Logs/Start-Stopp) | 9200 |
+| `obsidian-inbox-watcher` | Rohdokumente → Gemini → Vault-Notiz | — |
 
-What to read here:
+Was hier zu lesen ist:
 
-- [`repos.yaml`](repos.yaml) — the manifest, with real `consumes`/`exposes`/`port` edges.
-- [`docs/ai/SYSTEM.md`](docs/ai/SYSTEM.md) — dependency graph + end-to-end data flow.
-- [`docs/ai/ROUTING.md`](docs/ai/ROUTING.md) — concrete "where does this change go" table.
-- [`docs/ai/CONTRACTS.md`](docs/ai/CONTRACTS.md) — the three real coupling surfaces.
-- [`contracts/`](contracts/) — machine-readable titan OpenAPI + brain-mcp tool schema.
+- [`repos.yaml`](repos.yaml) — das Manifest, mit echten `consumes`/`exposes`/`port`-Kanten.
+- [`docs/ai/SYSTEM.md`](docs/ai/SYSTEM.md) — Abhängigkeitsgraph + End-to-end-Datenfluss.
+- [`docs/ai/ROUTING.md`](docs/ai/ROUTING.md) — konkrete „wohin geht diese Änderung"-Tabelle.
+- [`docs/ai/CONTRACTS.md`](docs/ai/CONTRACTS.md) — die drei echten Kopplungsflächen.
+- [`contracts/`](contracts/) — maschinenlesbare titan-OpenAPI + brain-mcp-Tool-Schema.
 
-This directory is intentionally skipped by `init-workspace.sh`, so its real names survive
-when you initialize a new system from the template.
+Dieses Verzeichnis wird von `init-workspace.sh` bewusst übersprungen, sodass seine echten Namen erhalten
+bleiben, wenn du ein neues System aus dem Template initialisierst.

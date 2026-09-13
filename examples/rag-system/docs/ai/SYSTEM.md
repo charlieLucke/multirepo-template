@@ -1,73 +1,73 @@
-# System Map — rag-system (FILLED EXAMPLE)
+# Systemkarte — rag-system (AUSGEFÜLLTES BEISPIEL)
 
-> A real instantiation: charlie's local RAG stack. Four independent repos in ~/projects,
-> joined only by titan's HTTP API and a shared vault-note format.
+> Eine reale Instanziierung: charlies lokaler RAG-Stack. Vier unabhängige Repos in ~/projects,
+> nur durch titans HTTP-API und ein gemeinsames Vault-Notiz-Format verbunden.
 
-## What this system does
+## Was dieses System macht
 
-A local, single-workstation knowledge system. Documents (Markdown notes, PDFs, and inbox
-files like PDF/DOCX/URLs) are turned into a searchable vector database and exposed to
-Claude. titan is the engine; brain-mcp bridges it to Claude; brain-dashboard operates it;
-obsidian-inbox-watcher feeds raw documents in. Everything runs locally — no cloud RAG.
+Ein lokales Wissenssystem für eine einzelne Workstation. Dokumente (Markdown-Notizen, PDFs und Inbox-
+Dateien wie PDF/DOCX/URLs) werden in eine durchsuchbare Vektordatenbank verwandelt und Claude
+zugänglich gemacht. titan ist die Engine; brain-mcp brückt sie zu Claude; brain-dashboard betreibt sie;
+obsidian-inbox-watcher speist Rohdokumente ein. Alles läuft lokal — kein Cloud-RAG.
 
 ## Services
 
-| Service (`repos/<name>`) | Role | Consumes | Exposes | Port |
+| Service (`repos/<name>`) | Rolle | Konsumiert | Stellt bereit | Port |
 |--------------------------|------|----------|---------|------|
-| **titan** | RAG engine: ingest + hybrid search over Qdrant | — (Qdrant, GPU) | HTTP API (`contracts/titan.openapi.yaml`) | 8765 (127.0.0.1) |
-| **brain-mcp** | MCP server + vault watcher; makes notes searchable for Claude | titan | MCP tools (`contracts/brain-mcp.tools.json`) | 9100 (0.0.0.0) |
-| **brain-dashboard** | Web control panel: status, logs, start/stop | titan (`/health`) | web UI (not a contract) | 9200 |
-| **obsidian-inbox-watcher** | Raw docs → Gemini → vault note | — | vault note format | — (worker) |
+| **titan** | RAG-Engine: Ingest + hybride Suche über Qdrant | — (Qdrant, GPU) | HTTP-API (`contracts/titan.openapi.yaml`) | 8765 (127.0.0.1) |
+| **brain-mcp** | MCP-Server + Vault-Watcher; macht Notizen für Claude durchsuchbar | titan | MCP-Tools (`contracts/brain-mcp.tools.json`) | 9100 (0.0.0.0) |
+| **brain-dashboard** | Web-Control-Panel: Status, Logs, Start/Stopp | titan (`/health`) | Web-UI (kein Contract) | 9200 |
+| **obsidian-inbox-watcher** | Rohdokumente → Gemini → Vault-Notiz | — | Vault-Notiz-Format | — (Worker) |
 
-## Dependency graph
+## Abhängigkeitsgraph
 
 ```
 brain-dashboard ──▶ titan ◀── brain-mcp
                                   ▲
-                                  │ (watches vault notes/inbox/)
+                                  │ (überwacht Vault notes/inbox/)
                     obsidian-inbox-watcher
 ```
 
-- `brain-mcp` and `brain-dashboard` call **titan over HTTP**. titan depends on no repo —
-  only on local infra (Qdrant container, the BGE-M3 model on the GPU).
-- `obsidian-inbox-watcher` doesn't call anyone; it **writes Markdown notes** into the vault
-  inbox. brain-mcp's *watcher* component then ingests them into titan. The coupling is the
-  **vault note format** (a `domain:` frontmatter field), not an API call.
+- `brain-mcp` und `brain-dashboard` rufen **titan über HTTP** auf. titan hängt von keinem Repo ab —
+  nur von lokaler Infra (Qdrant-Container, das BGE-M3-Modell auf der GPU).
+- `obsidian-inbox-watcher` ruft niemanden auf; es **schreibt Markdown-Notizen** in die Vault-
+  Inbox. Die *Watcher*-Komponente von brain-mcp ingestet sie dann in titan. Die Kopplung ist das
+  **Vault-Notiz-Format** (ein `domain:`-Frontmatter-Feld), kein API-Aufruf.
 
-## End-to-end data flow
+## End-to-end-Datenfluss
 
-**Ingest (note path):** edit/drop a `.md` in the vault → brain-mcp's `brain-watcher` debounces
-30 s → `POST titan /ingest/file` → Docling/Markdown read → header chunking → BGE-M3 Late
-Chunking (dense+sparse+colbert) → upsert into Qdrant.
+**Ingest (Notiz-Pfad):** ein `.md` im Vault editieren/ablegen → brain-mcps `brain-watcher` debouncet
+30 s → `POST titan /ingest/file` → Docling/Markdown-Read → Header-Chunking → BGE-M3 Late
+Chunking (dense+sparse+colbert) → Upsert in Qdrant.
 
-**Ingest (document path):** drop PDF/DOCX/URL in the inbox → obsidian-inbox-watcher extracts
-text → Gemini classifies/summarizes → writes a `.md` with `domain:` to `notes/inbox/` →
-(rejoins the note path above via brain-watcher).
+**Ingest (Dokument-Pfad):** PDF/DOCX/URL in die Inbox legen → obsidian-inbox-watcher extrahiert
+Text → Gemini klassifiziert/fasst zusammen → schreibt ein `.md` mit `domain:` nach `notes/inbox/` →
+(schließt sich oben dem Notiz-Pfad via brain-watcher an).
 
-**Query:** Claude calls an MCP tool on brain-mcp (`query_knowledge`) → brain-mcp →
-`POST titan /search` (hybrid dense+sparse+ColBERT, RRF) → ranked chunks → Claude composes
-the answer.
+**Query:** Claude ruft ein MCP-Tool auf brain-mcp auf (`query_knowledge`) → brain-mcp →
+`POST titan /search` (hybrid dense+sparse+ColBERT, RRF) → gerankte Chunks → Claude komponiert
+die Antwort.
 
-**Operate:** brain-dashboard polls `titan /health` every 3 s, streams systemd/Qdrant logs
-via SSE, and starts/stops the stack — it observes and controls, it is not in the data path.
+**Betrieb:** brain-dashboard pollt `titan /health` alle 3 s, streamt systemd-/Qdrant-Logs
+via SSE und startet/stoppt den Stack — es beobachtet und steuert, es ist nicht im Datenpfad.
 
-## Boundaries & invariants
+## Grenzen & Invarianten
 
-- **titan is the only writer of Qdrant.** No other repo touches the vector DB directly.
-- **`domain:` frontmatter is mandatory** for a note to be indexed; it is the shared
-  identifier that ties the inbox-watcher's output to titan's domain filter and cache.
-- **Re-ingest is upsert-before-delete** (new `run_id`, old chunks removed after) — no repo
-  may assume a note's chunks vanish mid-update.
-- **Service startup order:** Qdrant (Docker) → titan → brain-mcp / brain-watcher. A
-  consumer that gets "Titan unreachable" means the chain below it isn't up.
+- **titan ist der einzige Writer von Qdrant.** Kein anderes Repo berührt die Vektor-DB direkt.
+- **`domain:`-Frontmatter ist obligatorisch**, damit eine Notiz indexiert wird; es ist der gemeinsame
+  Identifikator, der den Output des Inbox-Watchers an titans Domain-Filter und -Cache bindet.
+- **Re-Ingest ist upsert-before-delete** (neue `run_id`, alte Chunks danach entfernt) — kein Repo
+  darf annehmen, dass die Chunks einer Notiz mitten im Update verschwinden.
+- **Service-Startreihenfolge:** Qdrant (Docker) → titan → brain-mcp / brain-watcher. Ein
+  Konsument, der „Titan unreachable" bekommt, bedeutet, die Kette darunter ist nicht oben.
 
-## Deployment topology
+## Deployment-Topologie
 
-- All services run in **WSL2 (Ubuntu)** as systemd user services on the workstation
-  `<workstation>`. Qdrant runs in **Docker Desktop on Windows** (`qdrant_workstation`, ports
+- Alle Services laufen in **WSL2 (Ubuntu)** als systemd-User-Services auf der Workstation
+  `<workstation>`. Qdrant läuft in **Docker Desktop auf Windows** (`qdrant_workstation`, Ports
   6333/6334).
-- titan binds `127.0.0.1:8765` (local only, by design). brain-mcp binds `0.0.0.0:9100` and
-  is exposed publicly via **Tailscale Funnel** (`<your-tailnet-host>.ts.net`), gated by
-  GitHub-OAuth allowlist — the only service reachable from outside.
-- External dependencies (not repos): Qdrant, the BGE-M3 model (GPU), the Gemini API
-  (inbox-watcher only), Tailscale.
+- titan bindet `127.0.0.1:8765` (nur lokal, by design). brain-mcp bindet `0.0.0.0:9100` und
+  ist öffentlich via **Tailscale Funnel** exponiert (`<your-tailnet-host>.ts.net`), abgesichert durch
+  GitHub-OAuth-Allowlist — der einzige von außen erreichbare Service.
+- Externe Abhängigkeiten (keine Repos): Qdrant, das BGE-M3-Modell (GPU), die Gemini-API
+  (nur Inbox-Watcher), Tailscale.

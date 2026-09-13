@@ -1,46 +1,46 @@
-# System Decisions Log
+# System-Entscheidungs-Log
 
-> Architecture Decision Records for **cross-repo** choices only. Decisions about a single
-> repo's internals belong in that repo's `docs/ai/DECISIONS.md`. Append-only.
+> Architecture Decision Records nur für **Repo-übergreifende** Entscheidungen. Entscheidungen über die
+> Interna eines einzelnen Repos gehören in dessen `docs/ai/DECISIONS.md`. Nur anhängen.
 
 ## Format
 
 ```
-## YYYY-MM-DD: Short title
-**Decision:** What we decided
-**Reasoning:** Why
-**Alternatives considered:** What we rejected and why
-**Consequences:** What this implies going forward
+## JJJJ-MM-TT: Kurztitel
+**Entscheidung:** Was wir entschieden haben
+**Begründung:** Warum
+**Erwogene Alternativen:** Was wir verworfen haben und warum
+**Konsequenzen:** Was das für die Zukunft bedeutet
 ```
 
 ---
 
-## Initial decisions (template defaults)
+## Anfangsentscheidungen (Template-Defaults)
 
-## 2026-XX-XX: Multi-repo over monorepo
-**Decision:** The system is a set of independent repos joined by contracts, coordinated by
-this workspace meta-repo — not a single monorepo.
-**Reasoning:** Services deploy and version independently; each stays standalone-runnable and
-small enough for an agent to hold in context; boundaries are enforced by contracts, not
-convention.
-**Alternatives considered:** Monorepo (simpler cross-repo refactor, but couples deploys and
-blurs ownership). Git submodules (reproducible but painful UX; agents stumble on detached
+## 2026-XX-XX: Multi-Repo statt Monorepo
+**Entscheidung:** Das System ist ein Satz unabhängiger Repos, durch Contracts verbunden, koordiniert von
+diesem Workspace-Meta-Repo — kein einzelnes Monorepo.
+**Begründung:** Services deployen und versionieren unabhängig; jedes bleibt eigenständig lauffähig und
+klein genug, dass ein Agent es im Kontext halten kann; Grenzen werden durch Contracts erzwungen, nicht
+durch Konvention.
+**Erwogene Alternativen:** Monorepo (einfacheres Repo-übergreifendes Refactoring, aber koppelt Deploys und
+verwischt Eigentümerschaft). Git-Submodule (reproduzierbar, aber schmerzhafte UX; Agenten stolpern über Detached
 HEAD).
-**Consequences:** Repos are cloned via the `repos.yaml` manifest into `repos/` (gitignored).
-Cross-repo coordination happens through contracts, workspace plans, and `workspace.sh`.
+**Konsequenzen:** Repos werden über das `repos.yaml`-Manifest nach `repos/` (gitignored) geklont.
+Repo-übergreifende Koordination läuft über Contracts, Workspace-Pläne und `workspace.sh`.
 
-## 2026-XX-XX: Contracts are the only coupling
-**Decision:** Repos may only depend on each other through interfaces recorded in
-`docs/ai/CONTRACTS.md` + `contracts/`. No reaching into another repo's internals.
-**Reasoning:** Keeps repos swappable and independently testable; makes breakage detectable
-(`workspace.sh contracts`) instead of silent.
-**Consequences:** Every published interface needs a contract entry; contract changes are
-Opus-level and must update all consumers.
+## 2026-XX-XX: Contracts sind die einzige Kopplung
+**Entscheidung:** Repos dürfen nur über Schnittstellen voneinander abhängen, die in
+`docs/ai/CONTRACTS.md` + `contracts/` festgehalten sind. Kein Hineingreifen in die Interna eines anderen Repos.
+**Begründung:** Hält Repos austauschbar und unabhängig testbar; macht Brüche erkennbar
+(`workspace.sh contracts`) statt still.
+**Konsequenzen:** Jede veröffentlichte Schnittstelle braucht einen Contract-Eintrag; Contract-Änderungen sind
+Opus-Ebene und müssen alle Konsumenten aktualisieren.
 
-## 2026-XX-XX: Each service is built from the single-repo template
-**Decision:** New services are scaffolded from `charlieLucke/python-template` via
-`./workspace.sh new`, inheriting uv + ruff + mypy-strict + pytest + pre-commit + CI and the
-`docs/ai/` workflow.
-**Reasoning:** One set of conventions and one quality gate per repo; the workspace only adds
-the system layer on top instead of reinventing per-repo tooling.
-**Consequences:** Per-repo conventions live in `shared/` and are pulled in, not copied by hand.
+## 2026-XX-XX: Jeder Service wird aus dem Single-Repo-Template gebaut
+**Entscheidung:** Neue Services werden aus `charlieLucke/python-template` via
+`./workspace.sh new` gescaffoldet und erben uv + ruff + mypy-strict + pytest + pre-commit + CI und den
+`docs/ai/`-Workflow.
+**Begründung:** Ein Satz Konventionen und ein Quality-Gate pro Repo; der Workspace ergänzt nur
+die Systemschicht obendrauf, statt Per-Repo-Tooling neu zu erfinden.
+**Konsequenzen:** Per-Repo-Konventionen leben in `shared/` und werden hereingezogen, nicht von Hand kopiert.

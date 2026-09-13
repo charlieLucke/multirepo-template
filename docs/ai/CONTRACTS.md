@@ -1,38 +1,38 @@
-# Contracts — the inter-service source of truth
+# Contracts — die Inter-Service-Source-of-Truth
 
-> The repos are decoupled; these contracts are the only thing connecting them. If a repo's
-> behavior at a boundary isn't written here (and, where possible, in `contracts/` as a
-> machine-readable file), it does not officially exist. Change here = change everywhere.
+> Die Repos sind entkoppelt; diese Contracts sind das Einzige, was sie verbindet. Wenn das
+> Verhalten eines Repos an einer Grenze nicht hier (und, wo möglich, in `contracts/` als
+> maschinenlesbare Datei) festgehalten ist, existiert es offiziell nicht. Hier ändern = überall ändern.
 
-## How to read this
+## Wie man das liest
 
-- One section per **published interface** (an HTTP API, a message/event schema, a CLI
-  another repo calls, a shared file format).
-- Each names its **provider** (the repo that owns/serves it) and its **consumers** (repos
-  that depend on it — must match the `consumes:` edges in `repos.yaml`).
-- The machine-readable form (OpenAPI / JSON Schema) lives in `contracts/`; this file is
-  the human-readable summary and the place to record *why* the contract is shaped this way.
+- Ein Abschnitt pro **veröffentlichter Schnittstelle** (eine HTTP-API, ein Message-/Event-Schema, eine CLI,
+  die ein anderes Repo aufruft, ein gemeinsames Dateiformat).
+- Jeder benennt seinen **Provider** (das Repo, das ihn besitzt/bedient) und seine **Konsumenten** (Repos,
+  die von ihm abhängen — müssen zu den `consumes:`-Kanten in `repos.yaml` passen).
+- Die maschinenlesbare Form (OpenAPI / JSON Schema) lebt in `contracts/`; diese Datei ist
+  die menschenlesbare Zusammenfassung und der Ort, um festzuhalten, *warum* der Contract so geformt ist.
 
-## Change protocol (non-negotiable)
+## Änderungsprotokoll (nicht verhandelbar)
 
-1. A contract change is an **Opus-level decision** — never improvise one mid-implementation.
-2. Update the machine-readable file in `contracts/` **and** this summary.
-3. Update **every** consumer listed below, in the agreed landing order (provider first
-   for additive changes; consumers first when removing a field they read).
-4. Run `./workspace.sh contracts` then `./workspace.sh check` — both must be green.
+1. Eine Contract-Änderung ist eine **Entscheidung auf Opus-Ebene** — niemals mitten in der Implementierung improvisieren.
+2. Die maschinenlesbare Datei in `contracts/` **und** diese Zusammenfassung aktualisieren.
+3. **Jeden** unten gelisteten Konsumenten aktualisieren, in der vereinbarten Landing-Reihenfolge (Provider zuerst
+   bei additiven Änderungen; Konsumenten zuerst, wenn ein Feld entfernt wird, das sie lesen).
+4. `./workspace.sh contracts` dann `./workspace.sh check` ausführen — beide müssen grün sein.
 
 ---
 
 ## Contract: <name>
 
 - **Provider:** repos/<name>
-- **Consumers:** repos/<a>, repos/<b>
-- **Machine-readable:** `contracts/<name>.openapi.yaml`
-- **Transport:** *(HTTP / queue / file / CLI)*
+- **Konsumenten:** repos/<a>, repos/<b>
+- **Maschinenlesbar:** `contracts/<name>.openapi.yaml`
+- **Transport:** *(HTTP / Queue / Datei / CLI)*
 
-### Surface
-*(Endpoints / messages / fields. Keep it tight — the machine-readable file is authoritative
-for exact shapes; this is the "what it means" layer.)*
+### Oberfläche
+*(Endpunkte / Messages / Felder. Knapp halten — die maschinenlesbare Datei ist maßgeblich
+für exakte Formen; das ist die „was es bedeutet"-Schicht.)*
 
-### Invariants & gotchas
-*(Versioning policy, backward-compat rules, fields that must never change meaning, etc.)*
+### Invarianten & Stolperfallen
+*(Versionierungs-Policy, Abwärtskompatibilitäts-Regeln, Felder, die nie ihre Bedeutung ändern dürfen, usw.)*

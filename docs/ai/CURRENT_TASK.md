@@ -1,23 +1,23 @@
-# Current Cross-Repo Task
+# Aktuelle Repo-übergreifende Aufgabe
 
-> Only for features that span more than one repo. Single-repo work is tracked in that
-> repo's own CURRENT_TASK.md. Keep this short.
+> Nur für Features, die mehr als ein Repo überspannen. Single-Repo-Arbeit wird in der
+> eigenen CURRENT_TASK.md des jeweiligen Repos getrackt. Kurz halten.
 
-## Goal
-*(What cross-repo feature are we building? One or two sentences.)*
+## Ziel
+*(Welches Repo-übergreifende Feature bauen wir? Ein oder zwei Sätze.)*
 
-## Workspace plan
-*(Link to docs/ai/plans/<file> — the Opus plan naming the per-repo sub-changes.)*
+## Workspace-Plan
+*(Link zu docs/ai/plans/<file> — der Opus-Plan, der die Per-Repo-Teiländerungen benennt.)*
 
-## Per-repo sub-steps (in landing order: providers before consumers)
-- [ ] repos/<provider> — <change> (+ update contract)
-- [ ] repos/<consumer> — <change>
+## Per-Repo-Teilschritte (in Landing-Reihenfolge: Provider vor Konsumenten)
+- [ ] repos/<provider> — <Änderung> (+ Contract aktualisieren)
+- [ ] repos/<consumer> — <Änderung>
 
-## Contract checklist
-- [ ] contracts/ updated
-- [ ] CONTRACTS.md updated
-- [ ] all consumers updated
-- [ ] `./workspace.sh contracts` green
+## Contract-Checkliste
+- [ ] contracts/ aktualisiert
+- [ ] CONTRACTS.md aktualisiert
+- [ ] alle Konsumenten aktualisiert
+- [ ] `./workspace.sh contracts` grün
 
-## Blockers
-*(Open questions, decisions needed before continuing.)*
+## Blocker
+*(Offene Fragen, nötige Entscheidungen vor dem Weitermachen.)*

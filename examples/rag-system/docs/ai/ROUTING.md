@@ -1,35 +1,35 @@
-# Routing — rag-system (FILLED EXAMPLE)
+# Routing — rag-system (AUSGEFÜLLTES BEISPIEL)
 
-> Where a change belongs. Consult this before editing any repo.
+> Wohin eine Änderung gehört. Vor dem Editieren irgendeines Repos hier nachschlagen.
 
-## Ownership by responsibility
+## Eigentümerschaft nach Verantwortung
 
-| If the change is about… | Repo | Notes |
+| Wenn die Änderung … betrifft | Repo | Notizen |
 |-------------------------|------|-------|
-| Chunking, embeddings, Late Chunking, BGE-M3 | **titan** | engine internals — local decision |
-| Hybrid search / RRF / ranking | **titan** | if `/search` response shape changes → contract |
-| Qdrant collection / vectors / payload index | **titan** | only titan writes Qdrant |
-| titan's HTTP endpoints (any path/param/response) | **titan** | **contract change** → update `contracts/titan.openapi.yaml` + brain-mcp + brain-dashboard |
-| An MCP tool's name/args/result | **brain-mcp** | **contract change** → `contracts/brain-mcp.tools.json` (Claude is the consumer) |
-| Vault watcher / debounce / which files get ingested | **brain-mcp** | calls titan `/ingest/file` |
-| GitHub-OAuth allowlist, Funnel auth | **brain-mcp** | local to brain-mcp |
-| Dashboard UI, status polling, log streaming, start/stop | **brain-dashboard** | reads titan `/health` only |
-| Inbox extraction, Gemini prompt, note-writing | **obsidian-inbox-watcher** | output must keep `domain:` frontmatter |
-| The vault note format / `domain:` field semantics | **system** | shared by inbox-watcher + brain-mcp + titan → workspace decision |
+| Chunking, Embeddings, Late Chunking, BGE-M3 | **titan** | Engine-Interna — lokale Entscheidung |
+| Hybride Suche / RRF / Ranking | **titan** | wenn sich die `/search`-Response-Form ändert → Contract |
+| Qdrant-Collection / Vektoren / Payload-Index | **titan** | nur titan schreibt Qdrant |
+| titans HTTP-Endpunkte (jeder Pfad/Param/jede Response) | **titan** | **Contract-Änderung** → `contracts/titan.openapi.yaml` + brain-mcp + brain-dashboard aktualisieren |
+| Name/Args/Result eines MCP-Tools | **brain-mcp** | **Contract-Änderung** → `contracts/brain-mcp.tools.json` (Claude ist der Konsument) |
+| Vault-Watcher / Debounce / welche Dateien ingestet werden | **brain-mcp** | ruft titan `/ingest/file` auf |
+| GitHub-OAuth-Allowlist, Funnel-Auth | **brain-mcp** | lokal zu brain-mcp |
+| Dashboard-UI, Status-Polling, Log-Streaming, Start/Stopp | **brain-dashboard** | liest nur titan `/health` |
+| Inbox-Extraktion, Gemini-Prompt, Notiz-Schreiben | **obsidian-inbox-watcher** | Output muss `domain:`-Frontmatter behalten |
+| Das Vault-Notiz-Format / die Semantik des `domain:`-Felds | **system** | geteilt von inbox-watcher + brain-mcp + titan → Workspace-Entscheidung |
 
-## Cross-repo changes (real examples)
+## Repo-übergreifende Änderungen (reale Beispiele)
 
-- **"Add a new field to titan's `/search` response"** → contract change. Update
-  `contracts/titan.openapi.yaml`, then brain-mcp (the consumer) in the same feature.
-  brain-dashboard is unaffected (only uses `/health`).
-- **"Change the `domain:` frontmatter rules"** → touches inbox-watcher (writer), brain-mcp
-  (watcher/reader), and titan (filter/cache). Workspace plan + decision required.
-- **"Rename an MCP tool"** → brain-mcp contract; the consumer is Claude itself, so update
-  `contracts/brain-mcp.tools.json` and any tool descriptions.
+- **„Ein neues Feld zu titans `/search`-Response hinzufügen"** → Contract-Änderung.
+  `contracts/titan.openapi.yaml` aktualisieren, dann brain-mcp (den Konsumenten) im selben Feature.
+  brain-dashboard ist nicht betroffen (nutzt nur `/health`).
+- **„Die `domain:`-Frontmatter-Regeln ändern"** → berührt inbox-watcher (Writer), brain-mcp
+  (Watcher/Reader) und titan (Filter/Cache). Workspace-Plan + Entscheidung erforderlich.
+- **„Ein MCP-Tool umbenennen"** → brain-mcp-Contract; der Konsument ist Claude selbst, also
+  `contracts/brain-mcp.tools.json` und etwaige Tool-Beschreibungen aktualisieren.
 
-## Quick decision tree
+## Schneller Entscheidungsbaum
 
-- Engine-internal (chunking, ranking, Qdrant)? → **titan**, local rules.
-- Changes a titan endpoint? → contract → update titan + brain-mcp (+ dashboard if `/health`).
-- MCP tool surface? → **brain-mcp** contract.
-- Note format / `domain:`? → **system-wide** → workspace plan first.
+- Engine-intern (Chunking, Ranking, Qdrant)? → **titan**, lokale Regeln.
+- Ändert einen titan-Endpunkt? → Contract → titan + brain-mcp aktualisieren (+ Dashboard, falls `/health`).
+- MCP-Tool-Oberfläche? → **brain-mcp**-Contract.
+- Notiz-Format / `domain:`? → **systemweit** → erst Workspace-Plan.

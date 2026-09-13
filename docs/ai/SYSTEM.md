@@ -1,43 +1,43 @@
-# System Map
+# Systemkarte
 
-> The big picture: every service, how they depend on each other, and how data flows
-> end-to-end. Read this before touching any repo. Keep it current — `repos.yaml` holds
-> the same graph as data; this file explains it in prose.
+> Das große Ganze: jeder Service, wie sie voneinander abhängen und wie Daten end-to-end
+> fließen. Das lesen, bevor du irgendein Repo anfasst. Aktuell halten — `repos.yaml` hält
+> denselben Graphen als Daten; diese Datei erklärt ihn in Prosa.
 
-## What this system does
+## Was dieses System macht
 
-*(One paragraph: what is the system as a whole, who is it for, what problem does it solve?
-Not any single service — the whole.)*
+*(Ein Absatz: was ist das System als Ganzes, für wen ist es, welches Problem löst es?
+Nicht ein einzelner Service — das Ganze.)*
 
 ## Services
 
-| Service (`repos/<name>`) | Role | Consumes | Exposes | Port |
+| Service (`repos/<name>`) | Rolle | Konsumiert | Stellt bereit | Port |
 |--------------------------|------|----------|---------|------|
-| *(name)* | *(one line)* | *(services it calls)* | *(contract file)* | *(port)* |
+| *(Name)* | *(eine Zeile)* | *(Services, die er aufruft)* | *(Contract-Datei)* | *(Port)* |
 
-## Dependency graph
+## Abhängigkeitsgraph
 
-*(Who calls whom. Arrows point from consumer → provider. Keep in sync with the
-`consumes:` edges in `repos.yaml`.)*
+*(Wer ruft wen auf. Pfeile zeigen von Konsument → Provider. Synchron halten mit den
+`consumes:`-Kanten in `repos.yaml`.)*
 
 ```
-(consumer) ──▶ (provider)
+(Konsument) ──▶ (Provider)
 ```
 
-## End-to-end data flow
+## End-to-end-Datenfluss
 
-*(Follow the main use case across service boundaries, from the outside in. Name the
-contract crossed at each hop.)*
+*(Dem Hauptanwendungsfall über Service-Grenzen hinweg folgen, von außen nach innen. Den
+bei jedem Hop gekreuzten Contract benennen.)*
 
 1. ...
 2. ...
 
-## Boundaries & invariants
+## Grenzen & Invarianten
 
-*(What must stay true across the whole system: shared identifiers, ordering guarantees,
-who is allowed to write what. The rules a single repo can't enforce alone.)*
+*(Was über das gesamte System wahr bleiben muss: gemeinsame Identifikatoren, Ordering-Garantien,
+wer was schreiben darf. Die Regeln, die ein einzelnes Repo nicht allein erzwingen kann.)*
 
-## Deployment topology
+## Deployment-Topologie
 
-*(Where each service runs, how they reach each other in prod vs. local, shared infra
-like databases or queues.)*
+*(Wo jeder Service läuft, wie sie sich in Prod vs. lokal erreichen, gemeinsame Infra
+wie Datenbanken oder Queues.)*

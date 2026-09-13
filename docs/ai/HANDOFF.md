@@ -1,30 +1,30 @@
-# System Handoff
+# System-Übergabe
 
-> Written at session end or before hitting a usage limit, for cross-repo work.
-> The next session (or a different model) starts here. Overwrite each time.
+> Geschrieben am Sitzungsende oder bevor ein Nutzungslimit erreicht wird, für Repo-übergreifende Arbeit.
+> Die nächste Sitzung (oder ein anderes Modell) beginnt hier. Jedes Mal überschreiben.
 
-# System Handoff – YYYY-MM-DD HH:MM
-Model: *(which model wrote this)*
+# System-Übergabe – JJJJ-MM-TT HH:MM
+Modell: *(welches Modell dies geschrieben hat)*
 
-## Feature in progress
-- Workspace plan: docs/ai/plans/*(file)*
+## Feature in Arbeit
+- Workspace-Plan: docs/ai/plans/*(file)*
 
-## Repos touched (and the commit/branch each is on)
-- repos/*(name)* @ *(branch/sha)* — *(what changed, what's left)*
+## Berührte Repos (und der Commit/Branch, auf dem jedes ist)
+- repos/*(name)* @ *(branch/sha)* — *(was sich geändert hat, was übrig ist)*
 
-## Landed so far (in dependency order)
+## Bisher gelandet (in Abhängigkeitsreihenfolge)
 -
 
-## Next concrete step (which repo, which change)
+## Nächster konkreter Schritt (welches Repo, welche Änderung)
 -
 
-## Contract status
-- [ ] contracts/ updated
-- [ ] all consumers updated
-- [ ] `./workspace.sh contracts` green
+## Contract-Status
+- [ ] contracts/ aktualisiert
+- [ ] alle Konsumenten aktualisiert
+- [ ] `./workspace.sh contracts` grün
 
-## Open questions / decisions needed (Opus)
+## Offene Fragen / nötige Entscheidungen (Opus)
 -
 
-## Notes / gotchas discovered
+## Notizen / entdeckte Stolperfallen
 -
