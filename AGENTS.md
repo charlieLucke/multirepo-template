@@ -1,7 +1,7 @@
 # Agent Instructions – Multi-Repo System
 
-> This file is mirrored across `CLAUDE.md`, `AGENTS.md`, and `GEMINI.md` so the same
-> instructions load in any AI environment. Do not edit one without updating the others.
+> Single source for every coding agent. `CLAUDE.md` and `GEMINI.md` only import this file;
+> edit here, nowhere else.
 
 You are operating inside a **system made of multiple independent repos**, connected only
 by explicit contracts. This is the *workspace* (meta-repo) layer. Each service repo under

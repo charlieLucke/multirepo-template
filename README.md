@@ -82,7 +82,7 @@ examples/rag-system/  Ein vollständig ausgefülltes Beispielsystem
 
 ## Arbeiten mit KI-Tools
 
-Zuerst `CLAUDE.md` lesen (gespiegelt als `AGENTS.md` / `GEMINI.md`). Sie definiert die
+Zuerst `AGENTS.md` lesen (`CLAUDE.md` und `GEMINI.md` importieren sie nur). Sie definiert die
 **Multi-Repo-Betriebsregeln**, die über den eigenen Agenten-Regeln jedes Child-Repos liegen:
 Locate-before-editing via `ROUTING.md`, Contracts-are-Law, One-Feature-One-Plan und
 das System-Quality-Gate. Child-Repos behalten ihre eigene `CLAUDE.md` für lokale Arbeit.
