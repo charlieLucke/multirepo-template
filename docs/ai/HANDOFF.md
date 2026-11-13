@@ -23,7 +23,7 @@ Modell: *(welches Modell dies geschrieben hat)*
 - [ ] alle Konsumenten aktualisiert
 - [ ] `./workspace.sh contracts` grün
 
-## Offene Fragen / nötige Entscheidungen (Opus)
+## Offene Fragen / nötige Entscheidungen
 -
 
 ## Notizen / entdeckte Stolperfallen
