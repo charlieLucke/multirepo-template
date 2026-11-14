@@ -44,6 +44,14 @@ if [ -f README.md ] && grep -q "TEMPLATE-USAGE:START" README.md; then
     echo "✓ Removed template-only README section"
 fi
 
+# Same for the agent instructions: the "this is the untouched template" note must not
+# survive into a real system.
+if [ -f AGENTS.md ] && grep -q "TEMPLATE-ONLY:START" AGENTS.md; then
+    sed '/<!-- TEMPLATE-ONLY:START/,/<!-- TEMPLATE-ONLY:END/d' AGENTS.md > AGENTS.md.tmp \
+        && mv AGENTS.md.tmp AGENTS.md
+    echo "✓ Removed template-only note from AGENTS.md"
+fi
+
 # Remove the bundled example system. It's reference material for the template, not part
 # of a real instance — a second, filled-in system definition sitting next to the real one
 # would confuse an agent (two SYSTEM.md / repos.yaml). Real systems start clean.

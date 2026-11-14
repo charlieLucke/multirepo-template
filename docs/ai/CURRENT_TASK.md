@@ -7,7 +7,7 @@
 *(Welches Repo-übergreifende Feature bauen wir? Ein oder zwei Sätze.)*
 
 ## Workspace-Plan
-*(Link zu docs/ai/plans/<file> — der Opus-Plan, der die Per-Repo-Teiländerungen benennt.)*
+*(Link zu docs/ai/plans/<file> — der Workspace-Plan, der die Per-Repo-Teiländerungen benennt.)*
 
 ## Per-Repo-Teilschritte (in Landing-Reihenfolge: Provider vor Konsumenten)
 - [ ] repos/<provider> — <Änderung> (+ Contract aktualisieren)

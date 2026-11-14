@@ -15,7 +15,7 @@
 
 ## Änderungsprotokoll (nicht verhandelbar)
 
-1. Eine Contract-Änderung ist eine **Entscheidung auf Opus-Ebene** — niemals mitten in der Implementierung improvisieren.
+1. Eine Contract-Änderung ist eine **Entscheidung auf Planungsebene** — niemals mitten in der Implementierung improvisieren.
 2. Die maschinenlesbare Datei in `contracts/` **und** diese Zusammenfassung aktualisieren.
 3. **Jeden** unten gelisteten Konsumenten aktualisieren, in der vereinbarten Landing-Reihenfolge (Provider zuerst
    bei additiven Änderungen; Konsumenten zuerst, wenn ein Feld entfernt wird, das sie lesen).
