@@ -87,6 +87,11 @@ Zuerst `AGENTS.md` lesen (`CLAUDE.md` und `GEMINI.md` importieren sie nur). Sie 
 Locate-before-editing via `ROUTING.md`, Contracts-are-Law, One-Feature-One-Plan und
 das System-Quality-Gate. Child-Repos behalten ihre eigene `AGENTS.md` für lokale Arbeit.
 
+Die Claude-Code-Hooks und das `.env`-Leseverbot eines Child-Repos (`repos/NAME/.claude/`) greifen
+nur, wenn Claude Code **in diesem Repo** gestartet wird, nicht vom Workspace-Root aus. Für die
+Umsetzung in einem Service deshalb dort starten; der Workspace-Root ist für Planung und
+Repo-übergreifende Arbeit.
+
 ## Lizenz
 
 MIT — siehe [LICENSE](LICENSE).

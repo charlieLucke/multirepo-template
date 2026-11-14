@@ -44,7 +44,9 @@ affected: workspace plan first (rule 2).
 ### 2. One feature, many repos, one plan
 A feature that spans repos gets a single plan in `docs/ai/plans/`, naming the per-repo
 changes and the order they land. Implement repo by repo in dependency order, providers
-before consumers. A repo's local notes reference the workspace plan, they do not copy it.
+before consumers. When the feature runs across sessions or tools, track it in the workspace
+`docs/ai/CURRENT_TASK.md`; a repo's local notes reference the workspace plan, they do not
+copy it.
 
 ### 3. Contracts are law
 - Never change a published interface without updating its contract and every consumer

@@ -29,7 +29,7 @@ Eine Änderung überspannt Repos, wenn sie einen **Contract** berührt oder ein 
 
 ## Schneller Entscheidungsbaum
 
-- Verhaltensänderung nur innerhalb eines Repos sichtbar? → dieses Repo editieren, seiner `AGENTS.md` folgen.
+- Verhaltensänderung nur innerhalb eines Repos sichtbar? → dieses Repo editieren, seiner `AGENTS.md` folgen (ältere Repos: `CLAUDE.md`).
 - Ändert einen veröffentlichten Endpunkt / eine Message-Form? → Contract-Änderung → **erst Workspace-Plan**.
 - Fügt einen neuen Service hinzu oder verschiebt Verantwortung zwischen Repos? → **Planungsentscheidung** in
   Workspace-`DECISIONS.md`, dann `repos.yaml` + `SYSTEM.md` aktualisieren.
