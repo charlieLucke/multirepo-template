@@ -26,10 +26,13 @@ Read on demand, not as a ritual. Open what the task touches:
 4. The plan in `docs/ai/plans/`: if the task names one; follow it and flag deviations
 5. Inside the repo you will edit: that repo's own `AGENTS.md`
 
-If the README still says `SYSTEM_NAME` and `repos.yaml` has an empty `services:` list, this
-is the untouched template: ask for a system name and description, run
-`./init-workspace.sh my-system "Short description"`, fill in `docs/ai/SYSTEM.md` with the
-user, then scaffold services with `./workspace.sh new my-service "Short description"`.
+<!-- TEMPLATE-ONLY:START (removed by init-workspace.sh) -->
+This repo is still the untouched template. Before any task: ask for a system name and
+description and run `./init-workspace.sh my-system "Short description"`.
+<!-- TEMPLATE-ONLY:END -->
+If `repos.yaml` has an empty `services:` list, the system is not set up yet: fill in
+`docs/ai/SYSTEM.md` with the user, then scaffold services with
+`./workspace.sh new my-service "Short description"`.
 
 ## The four operating rules
 
